@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Alert from '../components/ui/Alert';  // Adjust the path as needed
+import Alert from '../components/ui/Alert'; // Adjust the path as needed
 import HomePage from './HomePage'; // Import the HomePage component
 
 const LoginPage = () => {
@@ -26,23 +26,24 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Animated water background */}
-      <div className="absolute inset-0 bg-blue-500">
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: `linear-gradient(0deg, transparent 50%, #fff 100%)`,
-              animation: `wave ${3 + i * 0.5}s ease-in-out infinite`,
-              animationDelay: `${i * 0.2}s`,
-              transform: `translateY(${85 + i * 2}%)`,
-            }}
-          />
-        ))}
+      <div className="absolute inset-0 bg-blue-500 overflow-hidden">
+        {/* Water Waves */}
+        <div className="absolute inset-0 animate-water-rise">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className={`absolute w-full h-full opacity-50 wave wave-${i}`}
+              style={{
+                animationDelay: `${i * 2}s`,
+                zIndex: 10 - i,
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
 
       <div className="relative min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white bg-opacity-95 p-8 rounded-lg shadow-xl max-w-md w-full">
+        <div className="bg-white bg-opacity-95 p-8 rounded-lg shadow-xl max-w-md w-full z-10">
           <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
             {isLogin ? 'Welcome Back' : 'Create Account'}
           </h2>
@@ -95,21 +96,76 @@ const LoginPage = () => {
 
           {isLogin && (
             <div className="mt-2 text-center">
-              <button className="text-blue-600 hover:underline">
-                Forgot password?
-              </button>
+              <button className="text-blue-600 hover:underline">Forgot password?</button>
             </div>
           )}
         </div>
       </div>
 
       <style jsx>{`
-        @keyframes wave {
-          0%, 100% {
-            transform: translateY(85%);
+        /* Waves */
+        .wave {
+          position: absolute;
+          bottom: 0;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 15%, transparent 80%);
+          animation: wave-move 6s infinite linear, wave-rise 10s infinite ease-in-out;
+          border-radius: 50%;
+        }
+
+        .wave-0 {
+          background: rgba(255, 255, 255, 0.5);
+          animation-delay: 0s;
+        }
+
+        .wave-1 {
+          background: rgba(255, 255, 255, 0.4);
+          animation-delay: 2s;
+        }
+
+        .wave-2 {
+          background: rgba(255, 255, 255, 0.3);
+          animation-delay: 4s;
+        }
+
+        /* Keyframes for wave movement */
+        @keyframes wave-move {
+          from {
+            transform: translateX(0%);
+          }
+          to {
+            transform: translateX(-100%);
+          }
+        }
+
+        /* Keyframes for water rise */
+        @keyframes wave-rise {
+          0% {
+            transform: translateY(100%);
           }
           50% {
-            transform: translateY(80%);
+            transform: translateY(10%);
+          }
+          100% {
+            transform: translateY(100%);
+          }
+        }
+
+        /* Animation container */
+        .animate-water-rise {
+          animation: water-rise-level 20s infinite ease-in-out;
+        }
+
+        @keyframes water-rise-level {
+          0% {
+            transform: translateY(100%);
+          }
+          50% {
+            transform: translateY(10%);
+          }
+          100% {
+            transform: translateY(100%);
           }
         }
       `}</style>
